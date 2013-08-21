@@ -10,11 +10,11 @@ Note the main goal of this school project was to create an *animated HTML5* webs
 
 ### getting info about all packages
 
--> client sends
+- client sends
 
 	{ action : "ALL" }
 
--> server response
+- server response
 
 	{ response : [
 			{ id : 101,
@@ -55,12 +55,12 @@ Note the main goal of this school project was to create an *animated HTML5* webs
 
 ### Getting specific packag info
 
--> client sends
+- client sends
 
 	{ action : "QUERY",
 	  query  : "102" }
  
- -> server response
+ - server response
 
 	{ response : { id : 102,
 			  email: "r@vdg.info",
@@ -77,7 +77,7 @@ Note the main goal of this school project was to create an *animated HTML5* webs
 
 ### Storing a package info
 
--> client sends
+- client sends
 
 	{ action : "STORE",
 	  data   : {
@@ -92,7 +92,7 @@ Note the main goal of this school project was to create an *animated HTML5* webs
 	  }	  
 	}
 
--> server responds
+- server responds
 
 	{ respons : "SUCCES",
 	  id : 430
@@ -102,7 +102,7 @@ Response can be ["SUCCES", "FAILED", "DUPLICATE", "UPDATED"]
 
 ### Updating package info
 
--> client sends
+- client sends
 
 	{ action : "UPDATE",
 	  id : 430,
@@ -123,7 +123,7 @@ Package status can be ["TO_PICKUP", "ON_WAY", "DELIVERED"]
 
 For deleting, the user is currently optional. Might build in a password, or not. This is a visual demo after al.
 
--> client sends
+- client sends
 
 	{ action "DELETE",
 	  id : 340,
