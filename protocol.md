@@ -12,9 +12,12 @@ Note the main goal of this school project was to create an *animated HTML5* webs
 
 - client sends
 
+
     { action : "ALL" }
 
+
 - server response
+
 
     { response : [
             { id : 101,
@@ -53,7 +56,9 @@ Note the main goal of this school project was to create an *animated HTML5* webs
         ]
     }
 
+
 ### Getting specific packag info
+
 
 - client sends
 
@@ -61,6 +66,7 @@ Note the main goal of this school project was to create an *animated HTML5* webs
       query  : "102" }
 
  - server response
+
 
     { response : { id : 102,
               email: "r@vdg.info",
@@ -75,9 +81,11 @@ Note the main goal of this school project was to create an *animated HTML5* webs
             }
     }
 
+
 ### Storing a package info
 
 - client sends
+
 
     { action : "STORE",
       data   : {
@@ -92,17 +100,21 @@ Note the main goal of this school project was to create an *animated HTML5* webs
       }
     }
 
+
 - server responds
+
 
     { respons : "SUCCES",
       id : 430
     }
+
 
 Response can be ["SUCCES", "FAILED", "DUPLICATE", "UPDATED"]
 
 ### Updating package info
 
 - client sends
+
 
     { action : "UPDATE",
       id : 430,
@@ -117,6 +129,7 @@ Response can be ["SUCCES", "FAILED", "DUPLICATE", "UPDATED"]
               }
     }
 
+
 Package status can be ["TO_PICKUP", "ON_WAY", "DELIVERED"]
 
 ### Deleting package info
@@ -125,11 +138,13 @@ For deleting, the user is currently optional. Might build in a password, or not.
 
 - client sends
 
+
     { action "DELETE",
       id : 340,
       user : r@vdg.org,
       pass : butterfly
     }
+
 
 ## Data-storage of packages
 
