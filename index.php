@@ -8,7 +8,7 @@
 <body>
 
 <script type="application/x-javascript">
-    // server wrapper object
+    // include this as a file and then use the server warper object
     var server = {       
         sendJSON : function (url, data, callback){
             var request = new XMLHttpRequest();
@@ -25,7 +25,7 @@
 </script>
 <script type="application/x-javascript">
 
-// what data do we want to send?
+// some json data
 var data = {
     person: {
         name : "Robbe",
@@ -33,13 +33,17 @@ var data = {
     }
 };
 
+// send our JSON
 server.sendJSON("json.php", data, function(request){
+    // receive reply
     var type = request.getResponseHeader("Content-Type");
     
     if (type === "application/json") {
         // we are only interested in JSON responses atm
         var json_reply = JSON.parse(request.responseText);
         console.log(json_reply);
+        // call follow up function and give it our json_reply
+        
     } else if (type === "text/html") {
         var html_reply = request.responseText;
         console.log("Received some text/html");
