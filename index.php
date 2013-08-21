@@ -46,6 +46,7 @@ if (isset($_POST["data"])){
 
 <script type="application/x-javascript">
     var server = {
+        /* generic POST */
         do : function(params){
             /* Params are object
              *  { url : "index.php",
@@ -78,6 +79,18 @@ if (isset($_POST["data"])){
             // send response
             request.send(data);
             
+        },
+        
+        sendJSON : function (url, data, callback){
+            var request = new XMLHttpRequest();
+            request.open("POST", url);
+            request.onreadystatechange = function(){
+                if (request.readyState === 4 && callback != undefined) {
+                    callback(request);
+                }
+            };
+            request.setRequestHeader("Content-Type", "application/json");
+            request.send(JSON.stringify(data));
         }
     };
 </script>
@@ -115,7 +128,7 @@ var callback = function(e){
 };
 
 // now call our server object with the parameters nested in an object
-var params = {data: data, callback : callback,}
+var params = {data: data, callback : callback};
 server.do(params);
 
 </script>
