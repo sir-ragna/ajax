@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>Form test code</title>
+    <script type="text/javascript" src="./flip/server.js"></script>
 </head>
 
 <body>
