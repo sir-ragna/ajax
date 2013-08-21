@@ -129,7 +129,21 @@ var callback = function(e){
 
 // now call our server object with the parameters nested in an object
 var params = {data: data, callback : callback};
-server.do(params);
+// server.do(params);
+
+server.sendJSON("json.php", data, function(request){
+    var type = request.getResponseHeader("Content-Type");
+    
+    console.log(type);
+    if (type === "application/json") {
+        // we are only interested in JSON responses atm
+        var json_reply = JSON.parse(request.responseText);
+        console.log(json_reply);
+    } else if (type === "text/html") {
+        var html_reply = request.responseText;
+        console.log("Received some text/html");
+    }
+});
 
 </script>
 
