@@ -119,6 +119,18 @@ Response can be ["SUCCES", "FAILED", "DUPLICATE", "UPDATED"]
 
 Package status can be ["TO_PICKUP", "ON_WAY", "DELIVERED"]
 
+### Deleting package info
 
-## Datastorage of packages
+For deleting, the user is currently optional. Might build in a password, or not. This is a visual demo after al.
+
+-> client sends
+
+	{ action "DELETE",
+	  id : 340,
+	  user : r@vdg.org,
+	  pass : butterfly
+	}
+
+## Data-storage of packages
+
 
