@@ -36,7 +36,7 @@ var data = {
 // send our JSON
 server.sendJSON("json.php", data, function(request){
     // receive reply
-    var type = request.getResponseHeader("Content-Type");
+    var type = request.getResponseHeader("Content-Type").toLowerCase();
     
     if (type === "application/json") {
         // we are only interested in JSON responses atm
@@ -47,6 +47,9 @@ server.sendJSON("json.php", data, function(request){
     } else if (type === "text/html") {
         var html_reply = request.responseText;
         console.log("Received some text/html");
+        var p = document.createElement('p');
+        p.innerHTML = html_reply;
+        document.body.appendChild(p);
     }
 });
 
