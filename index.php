@@ -39,15 +39,18 @@ server.sendJSON("json.php", data, function(request){
     var type = request.getResponseHeader("Content-Type").toLowerCase();
     
     if (type === "application/json") {
-        // we are only interested in JSON responses atm
+        // If we get JSON
         var json_reply = JSON.parse(request.responseText);
-        console.log(json_reply);
-        // call follow up function and give it our json_reply
+        console.log(json_reply); // log JSON we received to the console
+        
+        // YOUR CODE HERE (that uses json_reply)
         
     } else if (type === "text/html") {
+        // the server returned HTML. This might be an error.
+        // To display this errer we append it to the document body.
         var html_reply = request.responseText;
         console.log("Received some text/html");
-        var p = document.createElement('p');
+        var p = document.createElement('div');
         p.innerHTML = html_reply;
         document.body.appendChild(p);
     }

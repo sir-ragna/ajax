@@ -26,7 +26,8 @@ if (isset($_SERVER['CONTENT_LENGTH']) && isset($_SERVER['CONTENT_TYPE'])){
         echo json_encode($json); // send JSON
         
     } else {
-        echo "<span class='error'>Only Accepts JSON</span>";
+        echo "<span class='error'>Only accept JSON with correct headers</span>";
+        echo "<span class='error'>Or JSON cannot be $length characters</span>";
     }    
 }
 
