@@ -5,20 +5,24 @@ $db_version = "v0.1";
 function readDatastore($datastore) {
     $json_str = fread(fopen($datastore, 'r'), filesize($datastore));
     $data =  json_decode($json_str, true);
-    $name = $data["name"];
-    $version = $data["version"];
-    echo "<br>";
-    echo $name;
-    echo "\n<br>";
-    echo $version;
-    echo "\n<br><code>";
-    echo str_replace("    ", "&nbsp;&nbsp;&nbsp;&nbsp;",
-                        str_replace("\n", "<br />" ,$json_str));
-    echo "</code>\n<br>";
-    echo var_dump($data);
+    return $data;
 }
 
-function storePackage($pkg){}
+function storePackage($data){
+    /* Expected incomming data
+    data = array(
+                'email' => string 'r@vdg.info' 
+                'package' => array(
+                      'start' => 'jabbeke' 
+                      'stop' =>  'kortrijk' 
+                      'title' =>  'eindwerk'
+                      )
+                )
+    */
+    $reply = array( "response" => "failed" );
+    echo var_dump($data);
+    return $reply;
+}
 
 function createDatastore($fname, $datstore_name){
     global  $db_version;
@@ -69,7 +73,4 @@ function createDatastore($fname, $datstore_name){
     fclose($fp);
 }
 
-echo "Testing";
-createDatastore("mystore.json", "DATASTORE");
-readDatastore("mystore.json");
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-// require_once('datastore.php');
+require_once('datastore.php');
 
 // Check if the type headers are set
 if (isset($_SERVER['CONTENT_LENGTH']) && isset($_SERVER['CONTENT_TYPE'])){
@@ -19,26 +19,27 @@ if (isset($_SERVER['CONTENT_LENGTH']) && isset($_SERVER['CONTENT_TYPE'])){
         
         // Handle JSON in PHP:
         // http://nitschinger.at/Handling-JSON-like-a-boss-in-PHP
-        $json = json_decode($input);
+                
+        $request = json_decode($input, true); // true -> array
+                                              // false -> object
+                                              // use array so true
+        $reply = "";
         
-        // TODO
+        // Determine what to do.
+        if (array_key_exists("action", $request)) {
+            $action = $request["action"];
+            
+            if ("STORE" == strtoupper($action)){
+                $reply = storePackage($request["data"]);
+            }
+        } else {
+            header('Content-Type: text/html');
+            echo var_dump($request);
+            exit;
+        }
         
-        // open file, read json
-        $fname = 'data.json';
-        $fp = fopen($fname, 'w');
-        
-        // CRUD
-        
-        // write file out
-        fwrite($fp, $input);
-        fclose($fp);
-        
-        // respond with JSON
-        
-        // REPLY
-        // set the appriorate header
         header('Content-Type: application/json');      
-        echo json_encode($json); // send JSON
+        echo json_encode($reply); // send JSON
         
     } else {
         echo "<span class='error'>Only accept JSON with correct headers</span>";
