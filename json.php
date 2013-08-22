@@ -19,6 +19,16 @@ if (isset($_SERVER['CONTENT_LENGTH']) && isset($_SERVER['CONTENT_TYPE'])){
         // http://nitschinger.at/Handling-JSON-like-a-boss-in-PHP
         $json = json_decode($input);
         
+        // TODO
+        
+        // open file, read json
+        
+        // CRUD
+        
+        // write file out
+        
+        
+        // respond with JSON
         
         // REPLY
         // set the appriorate header

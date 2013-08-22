@@ -131,7 +131,6 @@ Response can be ["SUCCES", "FAILED", "DUPLICATE", "UPDATED"]
 }
 ```
 
-
 ### Deleting package info
 
 For deleting, the user is currently optional. Might build in a password, or not. This is a visual demo after al.
