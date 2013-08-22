@@ -180,20 +180,38 @@ Said json is constructed en deconstructed in PHP with the following code.
 $data = array("name" => $datstore_name,
 			  "version" => $db_version,
 			  "users" => array(
-					array( "id" => 430,
-						   "start" => "Jabbeke",
-						   "stop"  => "Brugge",
-						   "type"  => "envelope",
-						   "title" => "Love letter",
-						   "status" => "ON_WAY"
-						   ),
-					array( "id" => 425,
-						   "start" => "Jabbeke",
-						   "stop"  => "Brugge",
-						   "type"  => "envelope",
-						   "title" => "Love letter",
-						   "status" => "ON_WAY"
-						   )
-				) 
-			  );
+						"r@vdg.info" => array(
+							array( "id" => 430,
+								   "start" => "Jabbeke",
+								   "stop"  => "Brugge",
+								   "type"  => "envelope",
+								   "title" => "Love letter",
+								   "status" => "ON_WAY"
+								   ),
+							array( "id" => 425,
+								   "start" => "Jabbeke",
+								   "stop"  => "Brugge",
+								   "type"  => "envelope",
+								   "title" => "Love letter",
+								   "status" => "DELIVERED"
+								   )
+						),
+						"i@dv.info" => array(
+							array( "id" => 530,
+								   "start" => "Brugge",
+								   "stop"  => "Jabbeke",
+								   "type"  => "envelope",
+								   "title" => "re:Invitation",
+								   "status" => "TO_PICKUP"
+								   ),
+							array( "id" => 402,
+								   "start" => "Brugge",
+								   "stop"  => "Jabbeke",
+								   "type"  => "envelope",
+								   "title" => "Stop stalking me",
+								   "status" => "ON_WAY"
+								   )
+						)
+					) 
+			 );
 ```

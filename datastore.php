@@ -12,10 +12,13 @@ function readDatastore($datastore) {
     echo "\n<br>";
     echo $version;
     echo "\n<br><code>";
-    echo str_replace("    ", "&nbsp;&nbsp;&nbsp;&nbsp;", str_replace("\n", "<br />" ,$json_str));
+    echo str_replace("    ", "&nbsp;&nbsp;&nbsp;&nbsp;",
+                        str_replace("\n", "<br />" ,$json_str));
     echo "</code>\n<br>";
     echo var_dump($data);
 }
+
+function storePackage($pkg){}
 
 function createDatastore($fname, $datstore_name){
     global  $db_version;
@@ -23,22 +26,40 @@ function createDatastore($fname, $datstore_name){
     $data = array("name" => $datstore_name,
                   "version" => $db_version,
                   "users" => array(
-                        array( "id" => 430,
-                               "start" => "Jabbeke",
-                               "stop"  => "Brugge",
-                               "type"  => "envelope",
-                               "title" => "Love letter",
-                               "status" => "ON_WAY"
-                               ),
-                        array( "id" => 425,
-                               "start" => "Jabbeke",
-                               "stop"  => "Brugge",
-                               "type"  => "envelope",
-                               "title" => "Love letter",
-                               "status" => "ON_WAY"
-                               )
-                    ) 
-                  );
+                            "r@vdg.info" => array(
+                                array( "id" => 430,
+                                       "start" => "Jabbeke",
+                                       "stop"  => "Brugge",
+                                       "type"  => "envelope",
+                                       "title" => "Love letter",
+                                       "status" => "ON_WAY"
+                                       ),
+                                array( "id" => 425,
+                                       "start" => "Jabbeke",
+                                       "stop"  => "Brugge",
+                                       "type"  => "envelope",
+                                       "title" => "Love letter",
+                                       "status" => "DELIVERED"
+                                       )
+                            ),
+                            "i@dv.info" => array(
+                                array( "id" => 530,
+                                       "start" => "Brugge",
+                                       "stop"  => "Jabbeke",
+                                       "type"  => "envelope",
+                                       "title" => "re:Invitation",
+                                       "status" => "TO_PICKUP"
+                                       ),
+                                array( "id" => 402,
+                                       "start" => "Brugge",
+                                       "stop"  => "Jabbeke",
+                                       "type"  => "envelope",
+                                       "title" => "Stop stalking me",
+                                       "status" => "ON_WAY"
+                                       )
+                            )
+                        ) 
+                 );
     
     $json_str = json_encode($data, JSON_PRETTY_PRINT);
     
