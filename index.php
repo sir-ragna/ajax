@@ -109,8 +109,8 @@
         
         
         server.sendJSON("json.php", query, callbackBoilerplate(function(response){
-            // handling of the response
-            console.log("replied :))");
+            // TODO handling of the response
+            console.log("replied (^_^)");
             console.log(response);
             }));
         
@@ -120,7 +120,10 @@
     var updatePackage = function(){};
     var removePackage = function(){};
     
-    /* callbackBoilerplate, */
+    /* callbackBoilerplate, gives back a function that check if the request
+     * object actually contains a JSON response , calls the argument function
+     * if so.
+    */
     var callbackBoilerplate = function(func){
         
         var append_error_to_html = function(input, header_type){
