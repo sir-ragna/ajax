@@ -105,9 +105,15 @@ Package status can be ["TO_PICKUP", "ON_WAY", "DELIVERED"]
 - server responds
 
 ```json
-{ respons : "SUCCES",
+{ response : "SUCCES",
   id : 430
 }
+```
+
+Or on failure
+
+```json
+{ response : "FAILED" }
 ```
 
 Response can be ["SUCCES", "FAILED", "DUPLICATE", "UPDATED"]

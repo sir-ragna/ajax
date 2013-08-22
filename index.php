@@ -110,8 +110,12 @@
         
         server.sendJSON("json.php", query, callbackBoilerplate(function(response){
             // TODO handling of the response
-            console.log("replied (^_^)");
-            console.log(response);
+            DEBUG("replied (^_^)");
+            DEBUG(response);
+            
+            if (response['response']) {
+                //code
+            }
             }));
         
     };
