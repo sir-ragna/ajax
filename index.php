@@ -57,13 +57,13 @@
     <fieldset>
         <legend>Pakketje Verzenden</legend>
            <p><label for="email">email</label>
-            <input type="text" id="email" value="email" /></p>
+            <input type="text" id="email" value="r@vdg.info" /></p>
            <p><label for="start">Afzendplaats</label>
-            <input type="text" id="start" value="start" /></p>
+            <input type="text" id="start" value="jabbeke" /></p>
            <p><label for="stop">Bestemming</label>
-            <input type="text" id="stop" value="stop" /></p>
+            <input type="text" id="stop" value="kortrijk" /></p>
            <p><label for="title">Titel</label>
-            <input type="text" id="title" value="title" /></p>
+            <input type="text" id="title" value="eindwerk" /></p>
 
             <div class="checkbox">
                 <p>
@@ -91,40 +91,56 @@
 
 <script type="application/x-javascript">
     document.getElementById("btn-verzend").onclick = function(target){
-        alert("verzonden");
-    }
-    
-    // some json data
-    var data = {
-        person: {
-            name : "Robbe",
-            age : 22,
-        }
+        createPackage();
     };
     
-    // send our JSON
-    server.sendJSON("json.php", data, function(request){
-        // receive reply
-        var type = request.getResponseHeader("Content-Type").toLowerCase();
+    var createPackage = function(){
+        // TODO VALIDATION
+        var query = { action : "STORE",
+                     data : {}
+            };
         
-        if (type === "application/json") {
-            // If we get JSON
-            var json_reply = JSON.parse(request.responseText);
-            console.log(json_reply); // log JSON we received to the console
-            
-            // YOUR CODE HERE (that uses json_reply)
-            
-        } else if (type === "text/html") {
-            // the server returned HTML. This might be an error.
-            // To display this errer we append it to the document body.
-            var html_reply = request.responseText;
-            console.log("Received some text/html");
-            var p = document.createElement('div');
-            p.innerHTML = html_reply;
-            document.body.appendChild(p);
-        }
-    });
-
+        query.data.email = document.getElementById("email").value;
+        query.data.package = {};
+        query.data.package.start = document.getElementById("start").value;
+        query.data.package.stop  = document.getElementById("stop").value;
+        query.data.package.title = document.getElementById("title").value;
+        
+        
+        server.sendJSON("json.php", query, callbackBoilerplate(function(response){
+            // handling of the response
+            console.log("replied :))");
+            console.log(response);
+            }));
+        
+    };
+    
+    // TODO CRUD
+    var updatePackage = function(){};
+    var removePackage = function(){};
+    
+    /* callbackBoilerplate, */
+    var callbackBoilerplate = function(func){
+        return (function(request){
+            var type = request.getResponseHeader("Content-Type").toLowerCase();
+        
+            if (type === "application/json") {
+                var json_reply = JSON.parse(request.responseText);
+                
+                func(json_reply); // call our own function
+                
+            } else if (type === "text/html") {
+                // the server returned HTML. ERROR?
+                var html_reply = request.responseText;
+                console.log("Received some text/html");
+                var p = document.createElement('div');
+                p.innerHTML = html_reply;
+                document.body.appendChild(p);
+            }
+        });
+       
+    };
+    
 </script>
 
 </body>
