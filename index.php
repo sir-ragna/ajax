@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>Form test code</title>
+    <script type="text/javascript" src="./js/DEBUG.js"></script>
     <script type="text/javascript" src="./js/server.js"></script>
     <style type="text/css">
     form, fieldset {
@@ -121,21 +122,39 @@
     
     /* callbackBoilerplate, */
     var callbackBoilerplate = function(func){
-        return (function(request){
-            var type = request.getResponseHeader("Content-Type").toLowerCase();
         
+        var append_error_to_html = function(input, header_type){
+            // We received the wrong header or could not parse the input JSON
+            // Append possible error message to our body.
+            console.log("Received header type: " + header_type);
+            var div = document.createElement('div');
+            div.classList.add("error");
+            div.innerHTML = input;
+            document.body.appendChild(div);
+        }
+        
+        return (function(request){
+            // Get headers and input
+            var type = request.getResponseHeader("Content-Type").toLowerCase();
+            var input = request.responseText;
+            
+            // print them for debugging purposes
+            DEBUG("Content-Type: " + type);
+            DEBUG("CONTENT: " + input);
+         
+            // do the headers give json?            
             if (type === "application/json") {
-                var json_reply = JSON.parse(request.responseText);
-                
-                func(json_reply); // call our own function
-                
-            } else if (type === "text/html") {
-                // the server returned HTML. ERROR?
-                var html_reply = request.responseText;
-                console.log("Received some text/html");
-                var p = document.createElement('div');
-                p.innerHTML = html_reply;
-                document.body.appendChild(p);
+                try {
+                    var json_reply = JSON.parse(input);
+                    func(json_reply);
+                } catch(e) {
+                    DEBUG(e.message);
+                    DEBUG("Not Actually JSON");
+                    append_error_to_html(input, type);
+                }                
+            } else {
+                DEBUG("Expected JSON header");
+                append_error_to_html(input, type);
             }
         });
        
