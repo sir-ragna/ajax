@@ -1,5 +1,7 @@
 <?php
 
+// require_once('datastore.php');
+
 // Check if the type headers are set
 if (isset($_SERVER['CONTENT_LENGTH']) && isset($_SERVER['CONTENT_TYPE'])){
     $type = $_SERVER['CONTENT_TYPE'];
