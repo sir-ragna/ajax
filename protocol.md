@@ -147,4 +147,53 @@ For deleting, the user is currently optional. Might build in a password, or not.
 
 ## Data-storage of packages
 
+The data is stored in text as json
+```json
+{ name : "JSON DATASTORE",
+  version: "v0.1",
+  users : [
+		{ "r@vdg.info" : [	{ id : 430,
+							   start : "...",
+							   stop  : "...",
+							   type  : "...",
+							   title : "...",
+							   status : "..."
+							 },
+							 { id : 425,
+							   start : "...",
+							   stop  : "...",
+							   type  : "...",
+							   title : "...",
+							   status : "..."						 
+							 }
+						 ]
+		},
+		{ users : packages},
+		{ ... },
+		{}
+	]
+}
+```
 
+Said json is constructed en deconstructed in PHP with the following code.
+```PHP
+$data = array("name" => $datstore_name,
+			  "version" => $db_version,
+			  "users" => array(
+					array( "id" => 430,
+						   "start" => "Jabbeke",
+						   "stop"  => "Brugge",
+						   "type"  => "envelope",
+						   "title" => "Love letter",
+						   "status" => "ON_WAY"
+						   ),
+					array( "id" => 425,
+						   "start" => "Jabbeke",
+						   "stop"  => "Brugge",
+						   "type"  => "envelope",
+						   "title" => "Love letter",
+						   "status" => "ON_WAY"
+						   )
+				) 
+			  );
+```
