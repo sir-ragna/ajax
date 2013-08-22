@@ -26,14 +26,26 @@
         font-weight: bold;
     }
     
-    .input-values input {
+    input {
         width: 300px;
         float: left;
+        margin-left: 20px;
+    }
+    
+    div.checkbox p input {
+        float: left;
+        width: 20px;
     }
     
     p {
         clear: both;
         padding: 5px;
+    }
+    
+    button {
+        float: right;
+        margin-bottom: 20px;
+        margin-right: 20px;
     }
     </style>
 </head>
@@ -54,52 +66,64 @@
             <input type="text" id="title" value="title" /></p>
 
             <div class="checkbox">
+                <p>
                 <label for="envelope">envelope</label>
                 <input type="radio" name="type" id="envelope" value="envelope" />
+                </p>
+                <p>
                 <label for="box1">box1</label>
                 <input type="radio" name="type" id="box1" value="box1" />
+                </p>
+                <p>
                 <label for="box2">box2</label>
                 <input type="radio" name="type" id="box2" value="box2" />
+                </p>
+                <p>
                 <label for="box3">box3</label>
-                <input type="radio" name="type" id="box3" value="box3" />              
+                <input type="radio" name="type" id="box3" value="box3" />
+                </p>
             </div>
+            <button id="btn-verzend" type="button">Verzend post</button>
     </fieldset>
 </form>
 
 
 
 <script type="application/x-javascript">
-
-// some json data
-var data = {
-    person: {
-        name : "Robbe",
-        age : 22,
+    document.getElementById("btn-verzend").onclick = function(target){
+        alert("verzonden");
     }
-};
-
-// send our JSON
-server.sendJSON("json.php", data, function(request){
-    // receive reply
-    var type = request.getResponseHeader("Content-Type").toLowerCase();
     
-    if (type === "application/json") {
-        // If we get JSON
-        var json_reply = JSON.parse(request.responseText);
-        console.log(json_reply); // log JSON we received to the console
+    // some json data
+    var data = {
+        person: {
+            name : "Robbe",
+            age : 22,
+        }
+    };
+    
+    // send our JSON
+    server.sendJSON("json.php", data, function(request){
+        // receive reply
+        var type = request.getResponseHeader("Content-Type").toLowerCase();
         
-        // YOUR CODE HERE (that uses json_reply)
-        
-    } else if (type === "text/html") {
-        // the server returned HTML. This might be an error.
-        // To display this errer we append it to the document body.
-        var html_reply = request.responseText;
-        console.log("Received some text/html");
-        var p = document.createElement('div');
-        p.innerHTML = html_reply;
-        document.body.appendChild(p);
-    }
-});
+        if (type === "application/json") {
+            // If we get JSON
+            var json_reply = JSON.parse(request.responseText);
+            console.log(json_reply); // log JSON we received to the console
+            
+            // YOUR CODE HERE (that uses json_reply)
+            
+        } else if (type === "text/html") {
+            // the server returned HTML. This might be an error.
+            // To display this errer we append it to the document body.
+            var html_reply = request.responseText;
+            console.log("Received some text/html");
+            var p = document.createElement('div');
+            p.innerHTML = html_reply;
+            document.body.appendChild(p);
+        }
+    });
 
 </script>
 
