@@ -22,11 +22,14 @@ if (isset($_SERVER['CONTENT_LENGTH']) && isset($_SERVER['CONTENT_TYPE'])){
         // TODO
         
         // open file, read json
+        $fname = 'data.json';
+        $fp = fopen($fname, 'w');
         
         // CRUD
         
         // write file out
-        
+        fwrite($fp, $input);
+        fclose($fp);
         
         // respond with JSON
         
