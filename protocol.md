@@ -18,7 +18,8 @@ Note the main goal of this school project was to create an *animated HTML5* webs
 - server response
 
 ```json
-{ response : [
+{ response : "SUCCES",
+  data : [
 		{ id : 101,
 		  email: "r@vdg.info",
 		  package : {
