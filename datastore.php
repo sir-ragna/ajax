@@ -1,6 +1,7 @@
 <?php
 
 $db_version = "v0.1";
+$db_name = "data.json";
 
 function readDatastore($datastore) {
     $json_str = fread(fopen($datastore, 'r'), filesize($datastore));
@@ -8,10 +9,11 @@ function readDatastore($datastore) {
     return $data;
 }
 
-function storePackage($data){
+function storePackage($package){
+    global $db_name;
     /* Expected incomming data
-    data = array(
-                'email' => string 'r@vdg.info' 
+    $package = array(
+                'email' => 'r@vdg.info' 
                 'package' => array(
                       'start' => 'jabbeke' 
                       'stop' =>  'kortrijk' 
@@ -19,9 +21,46 @@ function storePackage($data){
                       )
                 )
     */
-    $reply = array( "response" => "failed" );
-    echo var_dump($data);
+    $reply = array( "status" => "FAILED",
+                    "reason"   => "Didn't feel like it.");
+    //echo var_dump($data);
+    
+    // read in data
+    $data = readDatastore($db_name);
+    // check if user exists, otherwise ad
+    $users_emails = array_keys($data['users']);
+    
+    if (in_array($package['email'], $users_emails)) {
+        $email = $package['email'];
+        array_push($data['users'][$email], array(
+                        "start" => $package['package']['start'],
+                        "stop"  => $package['package']['stop' ],
+                        "title" => $package['package']['title'],
+            // not yet implemented TODO "type"  => $package['package']['type' ],
+                        "STATUS" => "TO_PICKUP"
+                ));
+    }
+    
+    $reply["users"] = $users_emails; // for debugging(temporary)
+    // add package to DB
+    
+    
     return $reply;
+}
+
+function getAllIDs(){
+    /* Here's where performance goes to DIE */
+    global $db_name;
+    $data = readDatastore($db_name);
+    
+    $IDs = array();
+    
+    foreach (array_values($data['users']) as $pack) {
+        array_push($IDs, $pack['id']);
+    }
+    
+    return IDs;
+    
 }
 
 function createDatastore($fname, $datstore_name){

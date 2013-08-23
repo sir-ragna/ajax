@@ -69,7 +69,8 @@ Package status can be ["TO_PICKUP", "ON_WAY", "DELIVERED"]
  - server response
 
 ```json
-{ response : { id : 102,
+{ status : "SUCCES"
+	data : { id : 102,
 		  email: "r@vdg.info",
 		  package : {
 				start : "Jabbeke",
@@ -105,7 +106,7 @@ Package status can be ["TO_PICKUP", "ON_WAY", "DELIVERED"]
 - server responds
 
 ```json
-{ response : "SUCCES",
+{ status : "SUCCES",
   id : 430
 }
 ```
@@ -113,10 +114,11 @@ Package status can be ["TO_PICKUP", "ON_WAY", "DELIVERED"]
 Or on failure
 
 ```json
-{ response : "FAILED" }
+{ status : "FAILED",
+  reason : "We fucked up" }
 ```
 
-Response can be ["SUCCES", "FAILED", "DUPLICATE", "UPDATED"]
+Response status can be ["SUCCES", "FAILED", "DUPLICATE", "UPDATED"]
 
 ### Updating package info
 

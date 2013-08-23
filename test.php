@@ -10,10 +10,10 @@
     
 <h1>Testing the datastore.php functions</h1>
 
-<p><?php createDatastore("mystore.json", "DATASTORE"); ?></p>
+<p><?php createDatastore("data.json", "DATASTORE"); ?></p>
 <p><?php
 
-    $data = readDatastore("mystore.json");
+    $data = readDatastore("data.json");
     $json_str = json_encode($data, JSON_PRETTY_PRINT);
     $name = $data["name"];
     $version = $data["version"];
@@ -25,7 +25,11 @@
     echo var_dump($data);
     
     ?></p>
-<p><?php  ?></p>
+<h2>IDs</h2>
+<p><?php
+        $IDs = getAllIDs();
+        echo var_dump($IDs);
+        ?></p>
 </body>
 </html>
 

@@ -109,13 +109,20 @@
         
         
         server.sendJSON("json.php", query, callbackBoilerplate(function(response){
-            // TODO handling of the response
-            DEBUG("replied (^_^)");
-            DEBUG(response);
-            
-            if (response['response']) {
-                //code
-            }
+                // TODO handling of the response
+                DEBUG("replied (^_^)");
+                status = response['status'].toUpperCase();
+                DEBUG(response);
+                
+                if ("FAILED" === status) {
+                    alert(response['reason']);
+                }
+                
+                if ("SUCCES" === status) {
+                    alert("Great succes, your ID is:\n" + response[id]);
+                }
+                
+
             }));
         
     };
