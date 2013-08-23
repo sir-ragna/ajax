@@ -34,6 +34,7 @@ function storePackage($package){
     if (in_array($package['email'], $users_emails)) {
         $email = $package['email'];
         array_push($data['users'][$email], array(
+                        "id" => $user_id,
                         "start" => $package['package']['start'],
                         "stop"  => $package['package']['stop' ],
                         "title" => $package['package']['title'],
@@ -73,6 +74,28 @@ function getAllIDs(){
     
 }
 
+//
+function getAllPacketsByUser($userEmail){
+  /* Here's where performance goes to DIE */
+    global $db_name;
+    $data = readDatastore($db_name);
+    
+    $IDs = array();
+    
+    foreach ($data['users'] as $users) {
+      echo '<h4>Pakketten van $userEmail</h4>';
+      echo var_dump($users);
+        foreach ($users as $email => $pack) {
+          if($email == $userEmail){
+              echo var_dump($pack);
+              array_push($IDs, $pack['id']);
+          }
+        }
+    }
+
+    return $IDs;
+}
+
 function createDatastore($fname, $datstore_name){
     global  $db_version;
     // build minimal datstore
@@ -81,14 +104,14 @@ function createDatastore($fname, $datstore_name){
                   "last_packet_id" => 100,
                   "users" => array(
                             "r@vdg.info" => array(
-                                array( "id" => 430,
+                                array( "id" => 10,
                                        "start" => "Jabbeke",
                                        "stop"  => "Brugge",
                                        "type"  => "envelope",
                                        "title" => "Love letter",
                                        "status" => "ON_WAY"
                                        ),
-                                array( "id" => 425,
+                                array( "id" => 11,
                                        "start" => "Jabbeke",
                                        "stop"  => "Brugge",
                                        "type"  => "envelope",
@@ -97,14 +120,14 @@ function createDatastore($fname, $datstore_name){
                                        )
                             ),
                             "i@dv.info" => array(
-                                array( "id" => 530,
+                                array( "id" => 12,
                                        "start" => "Brugge",
                                        "stop"  => "Jabbeke",
                                        "type"  => "envelope",
                                        "title" => "re:Invitation",
                                        "status" => "TO_PICKUP"
                                        ),
-                                array( "id" => 402,
+                                array( "id" => 13,
                                        "start" => "Brugge",
                                        "stop"  => "Jabbeke",
                                        "type"  => "envelope",
