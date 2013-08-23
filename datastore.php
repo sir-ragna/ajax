@@ -75,25 +75,48 @@ function getAllIDs(){
 }
 
 //
-function getAllPacketsByUser($userEmail){
-  /* Here's where performance goes to DIE */
-    global $db_name;
-    $data = readDatastore($db_name);
-    
-    $IDs = array();
-    
-    foreach ($data['users'] as $users) {
-      echo '<h4>Pakketten van $userEmail</h4>';
-      echo var_dump($users);
-        foreach ($users as $email => $pack) {
-          if($email == $userEmail){
-              echo var_dump($pack);
-              array_push($IDs, $pack['id']);
-          }
+function getPacketsByUser($userEmail){
+  
+  global $db_name;
+  $data = readDatastore($db_name);
+
+  $packets = array();
+
+  foreach($data['users'] as $email => $userPackets){
+
+    if(strtoupper($email) == strtoupper($userEmail)){
+        foreach($userPackets as $packet){
+            array_push($packets, $packet);
         }
     }
 
-    return $IDs;
+  }
+
+  return $packets;
+    
+}
+
+function updatePacket($email, $packetId, $newStatus){
+  global $db_name;
+  $data = readDatastore($db_name);
+
+  foreach($data['users'][$email] as $packet){
+    if($packet['id']==$packetId) {
+      echo var_dump(array_search($packet, array_keys($data['users'][$email])));
+
+
+        $index = array_search($packet, array_keys($data['users'][$email]));
+
+        var_dump($packet);
+        //TODO: check gettype van $index
+        // it might be a boolean false, in case the e-mail is not found
+        // !!!!!!
+        $data['users'][$email][$index]['status'] = $newStatus;
+    }
+  }
+
+  writeToDB($data);
+
 }
 
 function createDatastore($fname, $datstore_name){
