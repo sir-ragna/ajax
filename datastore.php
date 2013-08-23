@@ -28,6 +28,7 @@ function storePackage($package){
     // read in data
     $data = readDatastore($db_name);
     // check if user exists, otherwise ad
+    $user_id = $data['last_packet_id']++;
     $users_emails = array_keys($data['users']);
     
     if (in_array($package['email'], $users_emails)) {
@@ -41,9 +42,11 @@ function storePackage($package){
                 ));
     }
     
-    $reply["users"] = $users_emails; // for debugging(temporary)
-    // add package to DB
-    
+    writeToDB($data);
+
+    $reply = array( "status" => "SUCCES",
+                    "id" => $user_id);
+
     
     return $reply;
 }
@@ -55,11 +58,18 @@ function getAllIDs(){
     
     $IDs = array();
     
-    foreach (array_values($data['users']) as $pack) {
-        array_push($IDs, $pack['id']);
+    foreach ($data['users'] as $users) {
+      echo "<h4>users</h4>";
+      echo var_dump($users);
+        foreach ($users as $email => $pack) {
+           echo "<h4>pack</h4>";
+           echo var_dump($pack);
+           array_push($IDs, $pack['id']);
+          
+        }
     }
-    
-    return IDs;
+
+    return $IDs;
     
 }
 
@@ -68,6 +78,7 @@ function createDatastore($fname, $datstore_name){
     // build minimal datstore
     $data = array("name" => $datstore_name,
                   "version" => $db_version,
+                  "last_packet_id" => 100,
                   "users" => array(
                             "r@vdg.info" => array(
                                 array( "id" => 430,
@@ -110,6 +121,16 @@ function createDatastore($fname, $datstore_name){
     // fwrite ...
     fwrite($fp, $json_str);
     fclose($fp);
+}
+
+function writeToDB($data) {
+  global $db_name;
+  $json_str = json_encode($data, JSON_PRETTY_PRINT);
+  
+  $fp = fopen($db_name, 'w');
+  // fwrite ...
+  fwrite($fp, $json_str);
+  fclose($fp);
 }
 
 ?>
