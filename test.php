@@ -10,7 +10,7 @@
 
 <p>
     <?php
-     echo var_dump(updatePacket('r@vdg.info','10', 'DELIVERED'));
+     echo getPacketById('r@vdg.info','10');
     ?>
  </p>
 

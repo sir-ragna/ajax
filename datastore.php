@@ -120,8 +120,19 @@ function getPacketById($email,$packetId){
   foreach($data['users'][$email] as $packet){
 
     if($packet['id'] == $packetId){
-      return $packet;
+      $jsonPacket = "{  status : 'SUCCES'
+                        data : { id : " . $packet['id'] . ",
+                        email: '". $email ."',
+                        package : {
+                        start : '". $packet['start'] ."',
+                        stop  : '". $packet['stop'] ."',
+                        type  : '". $packet['type'] ."',
+                        title : '". $packet['title'] ."',
+                        status : '". $packet['status'] ."''}}}";
+      return $jsonPacket;
     }
+    $jsonPacket = '{status:"FAILED"}';
+    return $jsonPacket;
   }
 }
 
