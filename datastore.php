@@ -96,28 +96,28 @@ function getPacketsByUser($userEmail){
     
 }
 
-function updatePacket($email, $packetId, $newStatus){
+function updatePacket($email,$packetId,$newStatus){
   global $db_name;
   $data = readDatastore($db_name);
+  $i = 0;
 
   foreach($data['users'][$email] as $packet){
-    if($packet['id']==$packetId) {
-      echo var_dump(array_search($packet, array_keys($data['users'][$email])));
-
-
-        $index = array_search($packet, array_keys($data['users'][$email]));
-
-        var_dump($packet);
-        //TODO: check gettype van $index
-        // it might be a boolean false, in case the e-mail is not found
-        // !!!!!!
-        $data['users'][$email][$index]['status'] = $newStatus;
+    if($packet['id'] == $packetId){
+      $data['users'][$email][0]['status'] = $newStatus;
+      //return $data['users'];
+      writeToDB($data);
+      return 1;
     }
+    $i ++;
   }
+  return 0;
+}
 
-  writeToDB($data);
+function getPacketById($email,$packetId){
 
 }
+
+
 
 function createDatastore($fname, $datstore_name){
     global  $db_version;
