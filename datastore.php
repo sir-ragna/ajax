@@ -103,18 +103,26 @@ function updatePacket($email,$packetId,$newStatus){
 
   foreach($data['users'][$email] as $packet){
     if($packet['id'] == $packetId){
-      $data['users'][$email][0]['status'] = $newStatus;
+      $data['users'][$email][i]['status'] = $newStatus;
       //return $data['users'];
       writeToDB($data);
-      return 1;
+      return true;
     }
     $i ++;
   }
-  return 0;
+  return false;
 }
 
 function getPacketById($email,$packetId){
+  global $db_name;
+  $data = readDatastore($db_name);
 
+  foreach($data['users'][$email] as $packet){
+
+    if($packet['id'] == $packetId){
+      return $packet;
+    }
+  }
 }
 
 
