@@ -9,8 +9,10 @@
 <body>
 
 <h1>test, getPacketById</h1>
+
 <p>
     <?php
+
      echo getPacketById('r@vdg.info','10');
     ?>
  </p>
@@ -21,7 +23,7 @@
 <p><?php
 
     $data = readDatastore("data.json");
-    $json_str = json_encode($data, JSON_PRETTY_PRINT);
+    $json_str = json_encode($data);
     $name = $data["name"];
     $version = $data["version"];
     echo "<h2>Name: $name</h2>\n<h2>Version: $version</h2>\n<code>\n";

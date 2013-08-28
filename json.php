@@ -2,6 +2,8 @@
 
 //header('Access-Control-Allow-Origin: http://student.howest.be/robbe.van.der.gucht/fedex/');
 //header('Access-Control-Allow-Origin: http://localhost/');
+try {
+    
 
 require_once('datastore.php');
 
@@ -23,11 +25,8 @@ if (isset($_SERVER['CONTENT_LENGTH']) && isset($_SERVER['CONTENT_TYPE'])){
         // yes this is the prefered method:
         // http://www.php.net/manual/de/wrappers.php.php
         
-        try {
-            $input = file_get_contents('php://input');
-        } catch (Exception $e) {
-            echo 'Caught exception: ',  $e->getMessage(), "\n";
-        }
+        $input = file_get_contents('php://input');
+
         // Handle JSON in PHP:
         // http://nitschinger.at/Handling-JSON-like-a-boss-in-PHP
                 
@@ -36,6 +35,7 @@ if (isset($_SERVER['CONTENT_LENGTH']) && isset($_SERVER['CONTENT_TYPE'])){
                                               // use array so true
         $reply = "";
 
+        
         // Determine what to do.
         if (array_key_exists("action", $request)) {
             $action = $request["action"];
@@ -47,7 +47,7 @@ if (isset($_SERVER['CONTENT_LENGTH']) && isset($_SERVER['CONTENT_TYPE'])){
             
             if ("ALL" == $action){
                 $reply = readDatastore("data.json");
-                $reply['status'] = "SUCCES";
+                //$reply['status'] = "SUCCES";
             }
             
         } else {
@@ -69,4 +69,8 @@ if (isset($_SERVER['CONTENT_LENGTH']) && isset($_SERVER['CONTENT_TYPE'])){
 }
 header('Content-Type: text/html');
 echo "Problem?";
+
+} catch (Exception $e) {
+    echo 'Caught exception: ',  $e->getMessage(), "\n";
+}
 ?>
