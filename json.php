@@ -28,10 +28,17 @@ if (isset($_SERVER['CONTENT_LENGTH']) && isset($_SERVER['CONTENT_TYPE'])){
         // Determine what to do.
         if (array_key_exists("action", $request)) {
             $action = $request["action"];
+            $action = strtoupper($action);
             
-            if ("STORE" == strtoupper($action)){
+            if ("STORE" == $action){
                 $reply = storePackage($request["data"]);
             }
+            
+            if ("ALL" == $action){
+                $reply = readDatastore("data.json");
+                $reply['status'] = "SUCCES";
+            }
+            
         } else {
             header('Content-Type: text/html');
             echo var_dump($request);

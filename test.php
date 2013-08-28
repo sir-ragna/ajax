@@ -8,6 +8,7 @@
 
 <body>
 
+<h1>test, getPacketById</h1>
 <p>
     <?php
      echo getPacketById('r@vdg.info','10');

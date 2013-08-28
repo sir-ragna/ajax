@@ -2,115 +2,51 @@
 
 <html>
 <head>
-    <title>Form test code</title>
+    <title>get all users</title>
+
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
     <script type="text/javascript" src="./js/DEBUG.js"></script>
     <script type="text/javascript" src="./js/server.js"></script>
-    <style type="text/css">
-    form, fieldset {
-        display: block;
-        margin-top: 0px;
-        margin-bottom: 0px;
-        margin-left: auto;
-        margin-right: auto;
-        padding: 0px;
-        width: 500px;        
-    }
-    
-    legend {
-        font-size: 20px;
-    }
-    
-    p label {
-        float: left;
-        width: 100px;
-        text-align: right;
-        font-weight: bold;
-    }
-    
-    input {
-        width: 300px;
-        float: left;
-        margin-left: 20px;
-    }
-    
-    div.checkbox p input {
-        float: left;
-        width: 20px;
-    }
-    
-    p {
-        clear: both;
-        padding: 5px;
-    }
-    
-    button {
-        float: right;
-        margin-bottom: 20px;
-        margin-right: 20px;
-    }
-    </style>
 </head>
 
 <body>
 
-
-<form>
-    <fieldset>
-        <legend>Pakketje Verzenden</legend>
-           <p><label for="email">email</label>
-            <input type="text" id="email" value="r@vdg.info" /></p>
-           <p><label for="start">Afzendplaats</label>
-            <input type="text" id="start" value="jabbeke" /></p>
-           <p><label for="stop">Bestemming</label>
-            <input type="text" id="stop" value="kortrijk" /></p>
-           <p><label for="title">Titel</label>
-            <input type="text" id="title" value="eindwerk" /></p>
-
-            <div class="checkbox">
-                <p>
-                <label for="envelope">envelope</label>
-                <input type="radio" name="type" id="envelope" value="envelope" />
-                </p>
-                <p>
-                <label for="box1">box1</label>
-                <input type="radio" name="type" id="box1" value="box1" />
-                </p>
-                <p>
-                <label for="box2">box2</label>
-                <input type="radio" name="type" id="box2" value="box2" />
-                </p>
-                <p>
-                <label for="box3">box3</label>
-                <input type="radio" name="type" id="box3" value="box3" />
-                </p>
-            </div>
-            <button id="btn-verzend" type="button">Verzend post</button>
-    </fieldset>
-   <button id="btn-getusers" type="button">Get Users</button>
-
-</form>
+<h1>Waiting for users</h1>
 
 <div data-role="content">
     <div class="content-primary">
         <ul id="users" data-role="listview">
-            
+<!--           <li><li><h3>r@vdg.info</h3><p>Bekijk de pakketjes van de gebruiker: r@vdg.info</p><ul><li><div>10</div><p>Ophaal adres: Jabbeke<br>
+Bestemmings adres: Brugge<br>
+Beschrijving: Love letter<br>
+Huidige Status: ON_WAY<br>
+Type: envelope</p></li><li><div>11</div><p>Ophaal adres: Jabbeke<br>
+Bestemmings adres: Brugge<br>
+Beschrijving: Love letter<br>
+Huidige Status: DELIVERED<br>
+Type: envelope</p></li></ul></li><li><h3>i@dv.info</h3><p>Bekijk de pakketjes van de gebruiker: i@dv.info</p><ul><li><div>12</div><p>Ophaal adres: Brugge<br>
+Bestemmings adres: Jabbeke<br>
+Beschrijving: re:Invitation<br>
+Huidige Status: TO_PICKUP<br>
+Type: envelope</p></li><li><div>13</div><p>Ophaal adres: Brugge<br>
+Bestemmings adres: Jabbeke<br>
+Beschrijving: Stop stalking me<br>
+Huidige Status: ON_WAY<br>
+Type: envelope</p></li></ul></li>-->
         </ul>
     </div>
+    <button id="btn-getusers" type="button">Get Users</button>
 </div>
-
-
-
 <script type="application/x-javascript">
-    document.getElementById("btn-verzend").onclick = function(target){
-        createPackage();
-    };
-    
     document.getElementById("btn-getusers").onclick = function(target){
         getAllUsers();
     };
     
     var buildList = function(users){
         var usersList = document.getElementById('users');
+        usersList.innerHTML = "";
         for (email in users) {
             var li = document.createElement('li');
             var title = document.createElement('h3');
@@ -126,7 +62,7 @@
             for (packetIndex in users[email]) {
                 var liPackage = document.createElement('li');
                 var packet = users[email][packetIndex];
-                var id = document.createElement('h3');
+                var id = document.createElement('div');
                 var extended_descr = document.createElement('p');
                 extended_descr.innerHTML = [ "Ophaal adres: " + packet['start'],
                                    "Bestemmings adres: " + packet['stop'],
@@ -144,6 +80,7 @@
 
             usersList.appendChild(li);
         }
+        $('#users').listview('refresh');
     };
     
     var getAllUsers = function(){
@@ -162,42 +99,9 @@
         }));
     
     };
-    
-    var createPackage = function(){
-        // TODO VALIDATION
-        var query = { action : "STORE",
-                     data : {}
-            };
-        
-        query.data.email = document.getElementById("email").value;
-        query.data.package = {};
-        query.data.package.start = document.getElementById("start").value;
-        query.data.package.stop  = document.getElementById("stop").value;
-        query.data.package.title = document.getElementById("title").value;
-        
-        
-        server.sendJSON("json.php", query, callbackBoilerplate(function(response){
-                // TODO handling of the response
-                DEBUG("replied (^_^)");
-                status = response['status'].toUpperCase();
-                DEBUG(response);
-                
-                if ("FAILED" === status) {
-                    alert(response['reason']);
-                }
-                
-                if ("SUCCES" === status) {
-                    alert("Great succes, your ID is:\n" + response[id]);
-                }
-                
-
-            }));
-        
-    };
-    
+       
     // TODO CRUD
     var updatePackage = function(){};
-    var removePackage = function(){};
     
     /* callbackBoilerplate, gives back a function that check if the request
      * object actually contains a JSON response , calls the argument function
@@ -243,6 +147,7 @@
     };
     
 </script>
+
 
 </body>
 </html>
