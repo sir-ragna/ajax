@@ -180,7 +180,7 @@ function createDatastore($fname, $datstore_name){
                         ) 
                  );
     
-    $json_str = json_encode($data, JSON_PRETTY_PRINT);
+    $json_str = json_encode($data);
     
     $fp = fopen($fname, 'w');
     // fwrite ...
@@ -190,7 +190,7 @@ function createDatastore($fname, $datstore_name){
 
 function writeToDB($data) {
   global $db_name;
-  $json_str = json_encode($data, JSON_PRETTY_PRINT);
+  $json_str = json_encode($data);
   
   $fp = fopen($db_name, 'w');
   // fwrite ...

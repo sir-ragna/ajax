@@ -1,11 +1,18 @@
 <?php
 
+//header('Access-Control-Allow-Origin: http://student.howest.be/robbe.van.der.gucht/fedex/');
+//header('Access-Control-Allow-Origin: http://localhost/');
+
 require_once('datastore.php');
 
+
+    
 // Check if the type headers are set
 if (isset($_SERVER['CONTENT_LENGTH']) && isset($_SERVER['CONTENT_TYPE'])){
     $type = $_SERVER['CONTENT_TYPE'];
     $length = $_SERVER['CONTENT_LENGTH'];
+    
+
     
     // check content type en length
     if ( "application/json" == strtolower(explode(';', $type)[0])
@@ -15,8 +22,12 @@ if (isset($_SERVER['CONTENT_LENGTH']) && isset($_SERVER['CONTENT_TYPE'])){
         // read raw POST data
         // yes this is the prefered method:
         // http://www.php.net/manual/de/wrappers.php.php
-        $input = file_get_contents('php://input');
         
+        try {
+            $input = file_get_contents('php://input');
+        } catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
         // Handle JSON in PHP:
         // http://nitschinger.at/Handling-JSON-like-a-boss-in-PHP
                 
@@ -24,7 +35,7 @@ if (isset($_SERVER['CONTENT_LENGTH']) && isset($_SERVER['CONTENT_TYPE'])){
                                               // false -> object
                                               // use array so true
         $reply = "";
-        
+
         // Determine what to do.
         if (array_key_exists("action", $request)) {
             $action = $request["action"];
@@ -41,17 +52,21 @@ if (isset($_SERVER['CONTENT_LENGTH']) && isset($_SERVER['CONTENT_TYPE'])){
             
         } else {
             header('Content-Type: text/html');
+            echo "<p>No Action Found</p>";
             echo var_dump($request);
-            exit;
+            exit();
         }
         
         header('Content-Type: application/json');      
         echo json_encode($reply); // send JSON
-        
+        exit();
     } else {
+        header('Content-Type: text/html');
         echo "<span class='error'>Only accept JSON with correct headers</span>";
         echo "<span class='error'>Or JSON cannot be $length characters</span>";
+        exit();
     }    
 }
-
+header('Content-Type: text/html');
+echo "Problem?";
 ?>

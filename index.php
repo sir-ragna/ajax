@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Form test code</title>
-    <script type="text/javascript" src="./js/DEBUG.js"></script>
+    <script type="text/javascript" src="./js/debug.js"></script>
     <script type="text/javascript" src="./js/server.js"></script>
     <style type="text/css">
     form, fieldset {
