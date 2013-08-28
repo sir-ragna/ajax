@@ -2,12 +2,9 @@
 
 //header('Access-Control-Allow-Origin: http://student.howest.be/robbe.van.der.gucht/fedex/');
 //header('Access-Control-Allow-Origin: http://localhost/');
-try {
-    
+
 
 require_once('datastore.php');
-
-
     
 // Check if the type headers are set
 if (isset($_SERVER['CONTENT_LENGTH']) && isset($_SERVER['CONTENT_TYPE'])){
@@ -47,7 +44,7 @@ if (isset($_SERVER['CONTENT_LENGTH']) && isset($_SERVER['CONTENT_TYPE'])){
             
             if ("ALL" == $action){
                 $reply = readDatastore("data.json");
-                //$reply['status'] = "SUCCES";
+                $reply['status'] = "SUCCES";
             }
             
         } else {
@@ -70,7 +67,4 @@ if (isset($_SERVER['CONTENT_LENGTH']) && isset($_SERVER['CONTENT_TYPE'])){
 header('Content-Type: text/html');
 echo "Problem?";
 
-} catch (Exception $e) {
-    echo 'Caught exception: ',  $e->getMessage(), "\n";
-}
 ?>
