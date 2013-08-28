@@ -96,28 +96,47 @@ function getPacketsByUser($userEmail){
     
 }
 
-function updatePacket($email, $packetId, $newStatus){
+function updatePacket($email,$packetId,$newStatus){
+  global $db_name;
+  $data = readDatastore($db_name);
+  $i = 0;
+
+  foreach($data['users'][$email] as $packet){
+    if($packet['id'] == $packetId){
+      $data['users'][$email][i]['status'] = $newStatus;
+      //return $data['users'];
+      writeToDB($data);
+      return true;
+    }
+    $i ++;
+  }
+  return false;
+}
+
+function getPacketById($email,$packetId){
   global $db_name;
   $data = readDatastore($db_name);
 
   foreach($data['users'][$email] as $packet){
-    if($packet['id']==$packetId) {
-      echo var_dump(array_search($packet, array_keys($data['users'][$email])));
 
-
-        $index = array_search($packet, array_keys($data['users'][$email]));
-
-        var_dump($packet);
-        //TODO: check gettype van $index
-        // it might be a boolean false, in case the e-mail is not found
-        // !!!!!!
-        $data['users'][$email][$index]['status'] = $newStatus;
+    if($packet['id'] == $packetId){
+      $jsonPacket = "{  status : 'SUCCES'
+                        data : { id : " . $packet['id'] . ",
+                        email: '". $email ."',
+                        package : {
+                        start : '". $packet['start'] ."',
+                        stop  : '". $packet['stop'] ."',
+                        type  : '". $packet['type'] ."',
+                        title : '". $packet['title'] ."',
+                        status : '". $packet['status'] ."''}}}";
+      return $jsonPacket;
     }
+    $jsonPacket = '{status:"FAILED"}';
+    return $jsonPacket;
   }
-
-  writeToDB($data);
-
 }
+
+
 
 function createDatastore($fname, $datstore_name){
     global  $db_version;
