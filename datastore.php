@@ -3,141 +3,8 @@
 $db_version = "v0.1";
 $db_name = "data.json";
 
-function readDatastore($datastore) {
-    $json_str = fread(fopen($datastore, 'r'), filesize($datastore));
-    $data =  json_decode($json_str, true);
-    return $data;
-}
-
-function storePackage($package){
-    global $db_name;
-    /* Expected incomming data
-    $package = array(
-                'email' => 'r@vdg.info' 
-                'package' => array(
-                      'start' => 'jabbeke' 
-                      'stop' =>  'kortrijk' 
-                      'title' =>  'eindwerk'
-                      )
-                )
-    */
-    $reply = array( "status" => "FAILED",
-                    "reason"   => "Didn't feel like it.");
-    //echo var_dump($data);
-    
-    // read in data
-    $data = readDatastore($db_name);
-    // check if user exists, otherwise ad
-    $user_id = $data['last_packet_id']++;
-    $users_emails = array_keys($data['users']);
-    
-    if (in_array($package['email'], $users_emails)) {
-        $email = $package['email'];
-        array_push($data['users'][$email], array(
-                        "id" => $user_id,
-                        "start" => $package['package']['start'],
-                        "stop"  => $package['package']['stop' ],
-                        "title" => $package['package']['title'],
-            // not yet implemented TODO "type"  => $package['package']['type' ],
-                        "STATUS" => "TO_PICKUP"
-                ));
-    }
-    
-    writeToDB($data);
-
-    $reply = array( "status" => "SUCCES",
-                    "id" => $user_id);
-
-    
-    return $reply;
-}
-
-function getAllIDs(){
-    /* Here's where performance goes to DIE */
-    global $db_name;
-    $data = readDatastore($db_name);
-    
-    $IDs = array();
-    
-    foreach ($data['users'] as $users) {
-      echo "<h4>users</h4>";
-      echo var_dump($users);
-        foreach ($users as $email => $pack) {
-           echo "<h4>pack</h4>";
-           echo var_dump($pack);
-           array_push($IDs, $pack['id']);
-          
-        }
-    }
-
-    return $IDs;
-    
-}
-
-//
-function getPacketsByUser($userEmail){
-  
-  global $db_name;
-  $data = readDatastore($db_name);
-
-  $packets = array();
-
-  foreach($data['users'] as $email => $userPackets){
-
-    if(strtoupper($email) == strtoupper($userEmail)){
-        foreach($userPackets as $packet){
-            array_push($packets, $packet);
-        }
-    }
-
-  }
-
-  return $packets;
-    
-}
-
-function updatePacket($email,$packetId,$newStatus){
-  global $db_name;
-  $data = readDatastore($db_name);
-  $i = 0;
-
-  foreach($data['users'][$email] as $packet){
-    if($packet['id'] == $packetId){
-      $data['users'][$email][i]['status'] = $newStatus;
-      //return $data['users'];
-      writeToDB($data);
-      return true;
-    }
-    $i ++;
-  }
-  return false;
-}
-
-function getPacketById($email,$packetId){
-  global $db_name;
-  $data = readDatastore($db_name);
-
-  foreach($data['users'][$email] as $packet){
-
-    if($packet['id'] == $packetId){
-      $jsonPacket = "{  status : 'SUCCES'
-                        data : { id : " . $packet['id'] . ",
-                        email: '". $email ."',
-                        package : {
-                        start : '". $packet['start'] ."',
-                        stop  : '". $packet['stop'] ."',
-                        type  : '". $packet['type'] ."',
-                        title : '". $packet['title'] ."',
-                        status : '". $packet['status'] ."''}}}";
-      return $jsonPacket;
-    }
-    $jsonPacket = '{status:"FAILED"}';
-    return $jsonPacket;
-  }
-}
-
-
-
+//CRUD
+//Create
 function createDatastore($fname, $datstore_name){
     global  $db_version;
     // build minimal datstore
@@ -186,6 +53,181 @@ function createDatastore($fname, $datstore_name){
     // fwrite ...
     fwrite($fp, $json_str);
     fclose($fp);
+}
+
+//Read
+//Word ook gebruik om 
+function readDatastore($datastore) {
+    $json_str = fread(fopen($datastore, 'r'), filesize($datastore));
+    $data =  json_decode($json_str, true);
+    return $data;
+}
+
+//Werkt niet zoals het moet. | Gebruik getAllPacketIds
+function getAllIDs(){
+    /* Here's where performance goes to DIE */
+    global $db_name;
+    $data = readDatastore($db_name);
+    
+    $IDs = array();
+    
+    foreach ($data['users'] as $users) {
+      echo "<h4>users</h4>";
+      echo var_dump($users);
+        foreach ($users as $email => $pack) {
+           echo "<h4>pack</h4>";
+           echo var_dump($pack);
+           array_push($IDs, $pack['id']);
+          
+        }
+    }
+
+    return $IDs;  
+}
+
+function getAllPacketIds(){
+  global $db_name;
+  $data = readDatastore($db_name);
+
+  $ids = array();
+
+  foreach($data['users'] as $mail){
+    foreach($mail as $packet){
+
+      array_push($ids,$packet['id']);
+
+    }
+  }
+
+  return $ids;
+}
+
+function getPacketsByUser($userEmail){
+  
+  global $db_name;
+  $data = readDatastore($db_name);
+
+  $packets = array();
+
+  foreach($data['users'] as $email => $userPackets){
+
+    if(strtoupper($email) == strtoupper($userEmail)){
+        foreach($userPackets as $packet){
+            array_push($packets, $packet);
+        }
+    }
+
+  }
+
+  return $packets;
+    
+}
+
+//Deze geeft JSON trg 
+function getPacketByMailById($email,$packetId){
+  global $db_name;
+  $data = readDatastore($db_name);
+
+  foreach($data['users'][$email] as $packet){
+
+    if($packet['id'] == $packetId){
+      $jsonPacket = "{  status : 'SUCCES'
+                        data : { id : " . $packet['id'] . ",
+                        email: '". $email ."',
+                        package : {
+                        start : '". $packet['start'] ."',
+                        stop  : '". $packet['stop'] ."',
+                        type  : '". $packet['type'] ."',
+                        title : '". $packet['title'] ."',
+                        status : '". $packet['status'] ."''}}}";
+      return $jsonPacket;
+    }
+    $jsonPacket = '{status:"FAILED"}';
+    //nog encoden naar json.
+    return $jsonPacket;
+  }
+}
+
+function getPacketById($packetId){
+  global $db_name;
+  $data = readDatastore($db_name);
+
+  foreach($data['users'] as $mail){
+    foreach($mail as $packet){
+
+      if($packet['id']==$packetId){
+        return $packet;
+      }
+
+    }
+  }
+
+  return "Nothing";
+}
+
+//Update
+
+function updatePacket($email,$packetId,$newStatus){
+  global $db_name;
+  $data = readDatastore($db_name);
+  $i = 0;
+
+  foreach($data['users'][$email] as $packet){
+    if($packet['id'] == $packetId){
+      $data['users'][$email][i]['status'] = $newStatus;
+      //return $data['users'];
+      writeToDB($data);
+      return true;
+    }
+    $i ++;
+  }
+  return false;
+}
+
+
+//Other
+
+function storePackage($package){
+    global $db_name;
+    /* Expected incomming data
+    $package = array(
+                'email' => 'r@vdg.info' 
+                'package' => array(
+                      'start' => 'jabbeke' 
+                      'stop' =>  'kortrijk' 
+                      'title' =>  'eindwerk'
+                      )
+                )
+    */
+    $reply = array( "status" => "FAILED",
+                    "reason"   => "Didn't feel like it.");
+    //echo var_dump($data);
+    
+    // read in data
+    $data = readDatastore($db_name);
+    // check if user exists, otherwise ad
+    $user_id = $data['last_packet_id']++;
+    $users_emails = array_keys($data['users']);
+    
+    if (in_array($package['email'], $users_emails)) {
+        $email = $package['email'];
+        array_push($data['users'][$email], array(
+                        "id" => $user_id,
+                        "start" => $package['package']['start'],
+                        "stop"  => $package['package']['stop' ],
+                        "title" => $package['package']['title'],
+            // not yet implemented TODO "type"  => $package['package']['type' ],
+                        "STATUS" => "TO_PICKUP"
+                ));
+    }
+    
+    writeToDB($data);
+
+    $reply = array( "status" => "SUCCES",
+                    "id" => $user_id);
+
+    
+    return $reply;
 }
 
 function writeToDB($data) {
